@@ -1,24 +1,23 @@
-'use client'
+import React from 'react'
+import Link from 'next/link'
+import ThemeToggleButton from './buttons/ThemeToggleButton'
 
-import React,{useContext} from 'react'
-import ThemeContext from '@/context/ThemeContext'
 
 export default function Navbar() {
-    const {theme , toggleTheme} = useContext(ThemeContext)
-
     return (
-        <div className='flex flex-row gap-4 py-5 justify-center items-center z-10 bg-transparent'>
-            <button>tutorials</button>
-            <div>
-                <input type='text' placeholder='search'/>
+        <nav className='flex flex-row gap-4 py-5 px-20 justify-between items-center z-10 bg-transparent text-xl'>
+            <div className='flex flex-row gap-8'>
+                <Link href='/'>LOGO</Link>
+                <Link href='/tutorials'>tutorials</Link>
             </div>
-            <div className='flex flex-row gap-4'>
-                <button onClick={toggleTheme}>
-                    {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
-                    </button>
+
+            <div>
+                <input type='text' placeholder='search' />
+            </div>
+            <div className='flex flex-row gap-8'>
+                <ThemeToggleButton />
                 <button>sign in</button>
             </div>
-            
-        </div>
+        </nav>
     )
 }

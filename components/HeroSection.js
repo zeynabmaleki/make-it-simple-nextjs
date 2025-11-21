@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function HeroSection() {
     return (
-        <div className='min-h-screen flex justify-center items-center'>
-            <h1>hero section</h1>
+        <div className='flex flex-col justify-center items-center'>
+            <h1 className='text-3xl'>hero section</h1>
         </div>
     )
 }
