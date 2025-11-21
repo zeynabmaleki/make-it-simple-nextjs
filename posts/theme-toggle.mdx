@@ -1,0 +1,26 @@
+---
+title: "Understanding React useState"
+date: "2025-11-21"
+slug: "react-usestate"
+tags: ["react", "hooks", "state"]
+---
+
+# React `useState` Hook
+
+The `useState` hook lets you add state to functional components.
+
+## Example
+
+```jsx
+import { useState } from "react";
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}

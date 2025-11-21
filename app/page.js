@@ -1,11 +1,11 @@
-import AboutUs from "@/components/AboutUs";
-import ContactUs from "@/components/ContactUs";
-import HeroSection from "@/components/HeroSection";
-import Footer from "@/components/Footer";
+import AboutUs from "@/components/mainPage/AboutUs";
+import ContactUs from "@/components/mainPage/ContactUs";
+import HeroSection from "@/components/mainPage/HeroSection";
+import Footer from "@/components/mainPage/Footer";
 
 export default function Home() {
   return (
-    <main className="flex w-full flex-col items-center justify-between py-5 px-10  sm:items-start  font-sans">
+    <main className="flex w-full flex-col  py-5 px-10 font-sans">
       <HeroSection />
       <AboutUs />
       <ContactUs />
