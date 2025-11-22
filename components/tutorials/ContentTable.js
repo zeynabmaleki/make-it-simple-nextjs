@@ -33,7 +33,7 @@ export default function ContentTable() {
             <ul>
                 {posts.map((post) => (
                     <li key={post.slug}>
-                        <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                        <Link href={`/tutorials/${post.slug}`}>{post.title}</Link>
                     </li>
                 ))}
             </ul>

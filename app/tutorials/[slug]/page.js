@@ -4,8 +4,10 @@ import matter from "gray-matter";
 // gray-matter: Parses frontmatter, 
 // (the --- metadata block at the top of your MDX file).
 //  Splits metadata (data) from content (content).
-import { MDXRemote } from "next-mdx-remote/rsc";
+
+// import { MDXRemote } from "next-mdx-remote/rsc";
 // MDXRemote: Renders MDX content inside Next.js (App Router version).
+
 
 
 const postsDir = path.join(process.cwd(), "posts")
@@ -30,25 +32,30 @@ export async function generateStaticParams() {
     }))
 }
 
-export default async function PostPage({ params }) {
-    const { slug } = params
+export default async function TutorialPost({ params }) {
+    const { slug } = await params
 
     const filePath = path.join(postsDir, `${slug}.mdx`)
     // filePath → builds the full path to the MDX file (/posts/react-useState.mdx).
     const source = fs.readFileSync(filePath, 'utf8')
     // filePath → builds the full path to the MDX file (/posts/react-useState.mdx).
 
-    const { content, data } = matter(source)
+    const { data } = matter(source)
     // matter(source) → splits the file into:
     // data: frontmatter metadata (title, date, tags).
-    // content: the actual MDX body.
+
+    const Post = require(`../../../posts/${slug}.mdx`).default;
+    // Import the MDX file as a React component
 
     return (
         <article className="prose mx-auto">
             <h1>{data.title}</h1>
-            <MDXRemote source={content} />
+            <Post />
         </article>
     );
 }
 
 export const dynamicParams = false
+// This is fine, but remember:
+//  if generateStaticParams fails to return slugs,
+//  no routes will be generated → 404.
