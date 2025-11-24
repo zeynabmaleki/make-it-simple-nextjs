@@ -48,7 +48,7 @@ export default async function TutorialPost({ params }) {
     // Import the MDX file as a React component
 
     return (
-        <article className="prose mx-auto">
+        <article className="flex flex-col gap-4">
             <h1>{data.title}</h1>
             <Post />
         </article>
