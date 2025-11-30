@@ -5,14 +5,14 @@ slug: "react-useState"
 tags: ["react", "hooks", "state"]
 ---
 
-# React `useState` Hook
+import CodeBlock from '../components/CodeBlock'
 
-The `useState` hook lets you add state to functional components.
+# React useState Hook
 
-## Example
+A short example of the useState hook. Use the Copy button to grab the example code.
 
-```jsx
-import { useState } from "react";
+<CodeBlock language="jsx">
+{`import { useState } from "react";
 
 export default function Counter() {
   const [count, setCount] = useState(0);
@@ -23,4 +23,5 @@ export default function Counter() {
       <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
   );
-}
+}`}
+</CodeBlock>
