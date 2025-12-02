@@ -1,61 +1,73 @@
 import fs from 'fs'
 import path from 'path'
-import matter from "gray-matter";
-// gray-matter: Parses frontmatter, 
-// (the --- metadata block at the top of your MDX file).
-//  Splits metadata (data) from content (content).
-
-// import { MDXRemote } from "next-mdx-remote/rsc";
-// MDXRemote: Renders MDX content inside Next.js (App Router version).
-
-
+import matter from "gray-matter"
+import { MDXRemote } from 'next-mdx-remote/rsc'
 
 const postsDir = path.join(process.cwd(), "posts")
-// process.cwd() → current working directory (your project root).
-// "posts" → folder where your .mdx files live.
-// postsDir → absolute path to that folder.
-
 
 export async function generateStaticParams() {
-    // Purpose: Tells Next.js which dynamic routes (/blog/[slug])
-    // to pre-render at build time.
-    const files = fs.readdirSync(postsDir)
-    // fs.readdirSync(postsDir) → reads all filenames in /posts.
-    return files.map((file) => ({
-        // slug: file.replace(/\.mdx$/, ""),
-        slug: file.replace(/\.mdx$/, ""),
-        // file.replace(/\.mdx$/, "") → removes .mdx extension,
-        // leaving just the slug (name of the file).
+    const entries = fs.readdirSync(postsDir, { withFileTypes: true })
+    const categories = entries.filter(e => e.isDirectory()).map(d => d.name)
 
-        // Returns an array of objects like:
-        // [{ slug: "react-useState" }, { slug: "react-hooks-tutorial" }]
-    }))
+    const params = []
+
+    categories.forEach((cat) => {
+        const dir = path.join(postsDir, cat)
+        const files = fs.readdirSync(dir).filter(f => /\.(mdx?|md)$/i.test(f))
+
+        files.forEach((file) => {
+            const slug = file.replace(/\.(mdx?|md)$/i, "")
+            params.push({ slug })
+        })
+    })
+
+    return params
 }
 
 export default async function TutorialPost({ params }) {
     const { slug } = await params
 
-    const filePath = path.join(postsDir, `${slug}.mdx`)
-    // filePath → builds the full path to the MDX file (/posts/react-useState.mdx).
-    const source = fs.readFileSync(filePath, 'utf8')
-    // filePath → builds the full path to the MDX file (/posts/react-useState.mdx).
+    const entries = fs.readdirSync(postsDir, { withFileTypes: true })
+    const categories = entries.filter(e => e.isDirectory()).map(d => d.name)
 
-    const { data } = matter(source)
-    // matter(source) → splits the file into:
-    // data: frontmatter metadata (title, date, tags).
+    let filePath = null
+    let fileContent = null
 
-    const Post = require(`../../../posts/${slug}.mdx`).default;
-    // Import the MDX file as a React component
+    for (const cat of categories) {
+        const dir = path.join(postsDir, cat)
+        const testPath = path.join(dir, `${slug}.mdx`)
+        if (fs.existsSync(testPath)) {
+            filePath = testPath
+            fileContent = fs.readFileSync(testPath, 'utf8')
+            break
+        }
+    }
+
+    if (!filePath) {
+        return <div>Post not found</div>
+    }
+
+    const { data, content } = matter(fileContent)
 
     return (
         <article className="flex flex-col gap-4">
             <h1>{data.title}</h1>
-            <Post />
+            {data.description && <p className="text-gray-600">{data.description}</p>}
+            {data.date && <time className="text-sm text-gray-500">{new Date(data.date).toLocaleDateString()}</time>}
+            {data.tags && (
+                <div className="flex gap-2 flex-wrap">
+                    {data.tags.map((tag) => (
+                        <span key={tag} className="bg-gray-200 px-2 py-1 rounded text-sm">
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+            )}
+            <div className="prose prose-sm">
+                <MDXRemote source={content} />
+            </div>
         </article>
     );
 }
 
 export const dynamicParams = false
-// This is fine, but remember:
-//  if generateStaticParams fails to return slugs,
-//  no routes will be generated → 404.
