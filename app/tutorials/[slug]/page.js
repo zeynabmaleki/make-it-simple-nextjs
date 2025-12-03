@@ -52,17 +52,20 @@ export default async function TutorialPost({ params }) {
     return (
         <article className="flex flex-col gap-4">
             <h1>{data.title}</h1>
-            {data.description && <p className="text-gray-600">{data.description}</p>}
-            {data.date && <time className="text-sm text-gray-500">{new Date(data.date).toLocaleDateString()}</time>}
-            {data.tags && (
-                <div className="flex gap-2 flex-wrap">
-                    {data.tags.map((tag) => (
-                        <span key={tag} className="bg-gray-200 px-2 py-1 rounded text-sm">
-                            {tag}
-                        </span>
-                    ))}
-                </div>
-            )}
+            <div className='flex flex-row gap-8 items-baseline'>
+                {data.description && <p className="">{data.description}</p>}
+                {data.date && <time className="text-sm ">{new Date(data.date).toLocaleDateString()}</time>}
+                {data.tags && (
+                    <div className="flex gap-2 flex-wrap">
+                        {data.tags.map((tag) => (
+                            <span key={tag} className="bg-gray-200 px-2 py-1 rounded text-sm">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                )}
+            </div>
+
             <div className="prose prose-sm">
                 <MDXRemote source={content} />
             </div>

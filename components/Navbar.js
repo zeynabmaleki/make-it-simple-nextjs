@@ -17,7 +17,7 @@ export default function Navbar() {
                 </div>
                 <div className='flex flex-row gap-8'>
                     <ThemeToggleButton />
-                    <button>sign in</button>
+                    <button className='my_btn'>sign in</button>
                 </div>
             </nav>
         </section>
