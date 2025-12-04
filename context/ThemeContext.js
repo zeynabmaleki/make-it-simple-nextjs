@@ -9,8 +9,17 @@ export const ThemeProvider = ({ children }) => {
     const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme)
+        // Read from localStorage on mount
+        const saved = localStorage.getItem('theme') || 'dark'
+        setTheme(saved)
+        document.documentElement.setAttribute('data-theme', saved)
         setMounted(true)
+    }, [])
+
+    useEffect(() => {
+        // Update whenever theme changes
+        document.documentElement.setAttribute('data-theme', theme)
+        localStorage.setItem('theme', theme)
     }, [theme])
 
     const toggleTheme = () => {
